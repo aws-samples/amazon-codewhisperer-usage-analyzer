@@ -1,6 +1,6 @@
 # Usage Analyzer for Amazon CodeWhisperer
 
-The [AmazonCodeWhisperer](https://aws.amazon.com/codewhisperer/) usage analyzer is used to perform analysis on code suggestions and security scans for Organizations using the CodeWhisperer professional tier.
+The [Amazon CodeWhisperer](https://aws.amazon.com/codewhisperer/) usage analyzer is used to perform analysis on code suggestions and security scans for Organizations using the CodeWhisperer professional tier.
 
 Once deployed all code suggestions and security scans will publish metrics into a data pipeline, which will make the information readily available to query via [Amazon Athena](https://aws.amazon.com/athena/). With these metrics you can write queries that are capable of reporting on usage and attributing total spend to a particular user or group.
 
@@ -31,7 +31,7 @@ export SSO_GROUP_IDS="GROUP_ID_1,GROUP_ID2,GROUP_ID_N"
 ```
 export SSO_REGION="REGION_CODE"
 ```
-7. Deploy the CDK Stack in your AWS account (ignoring the context flag if you did not complete step 5)
+7. Deploy the CDK Stack in your AWS account (ignoring the context flag if you did not complete step 5 or step 6)
 ```
 cdk deploy --context sso_group_ids=$SSO_GROUP_IDS --context sso_region=$SSO_REGION
 ```
