@@ -5,7 +5,14 @@ import json
 
 user_details = {}
 group_details = {}
-client = boto3.client('identitystore')
+
+#If the SSO_REGION variable is set use this to interact with the identity store, otherwise use the default region
+if 'SSO_REGION' in os.environ:
+    sso_region = os.environ['SSO_REGION']
+else:
+    sso_region = os.environ['AWS_DEFAULT_REGION']   
+
+client = boto3.client('identitystore', region_name=sso_region)
 
 def lambda_handler(event, context):
     

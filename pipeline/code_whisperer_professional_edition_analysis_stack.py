@@ -59,12 +59,16 @@ class CodeWhispererProfessionalEditionAnalysisStack(Stack):
             ]
         )
         
+        #Get the SSO region that was specified in a context argument
+        sso_region = self.node.try_get_context("sso_region")
+        
         #Create the accompanying Kinesis Data Firehose stream with all neccessary components
         firehose = KinesisFirehose(
             self,
             "KinesisFirehose",
             bucket=codewhisperer_events_bucket,
-            group_ids=group_ids
+            group_ids=group_ids,
+            sso_region=sso_region
         )
         
         #Create an EventBridge rule to trigger based on CodeWhisperer data event patterns

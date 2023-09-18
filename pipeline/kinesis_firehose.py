@@ -19,7 +19,8 @@ class KinesisFirehose(Construct):
         scope: Construct,
         id_: str,
         bucket: s3.IBucket,
-        group_ids: []
+        group_ids: [],
+        sso_region: str
     ):
         super().__init__(scope, id_)
         
@@ -30,15 +31,20 @@ class KinesisFirehose(Construct):
         
         bucket.grant_read_write(firehose_role, "*")
         
+        environment_variables = {
+            'SSO_GROUP_IDS': ','.join(group_ids)
+        }
+        
+        if sso_region != None:
+            environment_variables['SSO_REGION'] = sso_region
+        
         #Create the Lambda function that will be used for processing
         transformer_function = lambda_.Function(self, "FirehoseTransformationLambda",
             code=lambda_.Code.from_asset(os.path.join(Path.cwd(), "pipeline", "firehose_transformation")),
             handler="index.lambda_handler",
             runtime=lambda_.Runtime.PYTHON_3_11,
             architecture=lambda_.Architecture.ARM_64,
-            environment={
-                'SSO_GROUP_IDS': ','.join(group_ids)
-            },
+            environment=environment_variables,
             #This should be more than enough for the majority of usecases. Results are cached in the function so lookups and processing should be fast
             memory_size=512,
             timeout=duration.seconds(60),

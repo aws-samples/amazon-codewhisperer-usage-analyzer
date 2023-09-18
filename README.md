@@ -8,14 +8,14 @@ Once deployed all code suggestions and security scans will publish metrics into 
 
 ## Deploying
 
-*Please note that this solution will need to be deployed into the same account as your CodeWhisperer Professional profile was configured.*
+*Please note that this solution will need to be deployed into the same account as your CodeWhisperer Professional profile was configured. Currently this stack must be deployed in us-east-1 as CodeWhisperer Professional events are only accessible from this region*
 
 1. Clone the repository
 2. Install the AWS Cloud Developer Kit (AWS CDK). Full instructions can be found [here](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install).
 ```
 npm install -g aws-cdk
 ```
-3. Install dependencies 
+3. Install dependencies
 ```
 pip install -r requirements.txt
 ```
@@ -27,9 +27,13 @@ cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 export SSO_GROUP_IDS="GROUP_ID_1,GROUP_ID2,GROUP_ID_N"
 ```
-6. Deploy the CDK Stack in your AWS account (ignoring the context flag if you did not complete step 5)
+6. **(Optional)** If your SSO region is different than the region this stack is being deployed in, set the following environment variables
 ```
-cdk deploy --context sso_group_ids=$SSO_GROUP_IDS
+export SSO_REGION="REGION_CODE"
+```
+7. Deploy the CDK Stack in your AWS account (ignoring the context flag if you did not complete step 5)
+```
+cdk deploy --context sso_group_ids=$SSO_GROUP_IDS --context sso_region=$SSO_REGION
 ```
 
 ## Example Queries
