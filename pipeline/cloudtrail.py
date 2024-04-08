@@ -57,6 +57,9 @@ class CloudTrail(Construct):
                 )]
             )]
         )
+
+        #Set dependency between CloudTrail and S3 bucket policy
+        self.codewhisperer_trail.node.add_dependency(self.trail_s3.policy)
         
         #Set permissions for CloudTrail to interact with the S3 bucket
         self.trail_s3.add_to_resource_policy(

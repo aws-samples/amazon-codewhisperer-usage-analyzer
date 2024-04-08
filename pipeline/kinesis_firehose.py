@@ -59,11 +59,19 @@ class KinesisFirehose(Construct):
             [NagPackSuppression(id="AwsSolutions-IAM4", reason="Default policy contains required permissions for Lambda to function such as writing logs")],
             True
         )
+
+        NagSuppressions.add_resource_suppressions(
+            transformer_function,
+            [NagPackSuppression(id="AwsSolutions-IAM5", reason="IAM permissions managed by L2 Lambda construct")],
+            True
+        )
+
         NagSuppressions.add_resource_suppressions(
             firehose_role,
             [NagPackSuppression(id="AwsSolutions-IAM5", reason="IAM permissions restricted to this specific bucket, used for pushing events into")],
             True
         )
+
         
         #Check if SSO Group IDs were passed in context. If they were then add permissions to read the user details and groups.
         if len(group_ids) > 0:
